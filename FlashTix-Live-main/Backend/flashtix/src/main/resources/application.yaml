@@ -1,0 +1,12 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/flashtix_db?useSSL=false&serverTimezone=UTC
+    username: root
+    password: networksecure@56 # Replace with your MySQL password
+  jpa:
+    hibernate:
+      ddl-auto: update # Automatically creates/updates tables
+    show-sql: true # Helps debug by showing SQL queries in the console
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
