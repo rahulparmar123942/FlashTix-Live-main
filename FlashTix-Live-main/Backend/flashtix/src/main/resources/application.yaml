@@ -14,3 +14,10 @@ spring:
     redis:
       host: localhost
       port: 6379
+
+minio:
+  url: http://localhost:9000
+  access-key: admin # Use your actual MinIO key
+  secret-key: password123 # Use your actual MinIO key
+  bucket-name: flashtix-assets #
+  #cdn-domain: http://localhost:9000
