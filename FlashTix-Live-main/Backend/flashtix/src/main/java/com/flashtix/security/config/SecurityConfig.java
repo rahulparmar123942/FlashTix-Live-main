@@ -52,6 +52,9 @@ public class SecurityConfig {
                         auth.requestMatchers("/api/auth/**").permitAll() // Login/Register are public
                                 .requestMatchers(HttpMethod.GET, "/api/events").permitAll() // Anyone can browse
 
+                                // --- NEW: Allow WebSocket Handshakes ---
+                                .requestMatchers("/ws-ticketing/**").permitAll()
+                                // ---------------------------------------
 
                                 // PROTECT THE POST ROUTE: Only ADMIN can add events
                                 .requestMatchers(HttpMethod.POST, "/api/events/**").hasRole("ADMIN")
