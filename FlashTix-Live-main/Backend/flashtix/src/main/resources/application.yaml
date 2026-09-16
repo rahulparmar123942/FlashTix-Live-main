@@ -1,8 +1,9 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/flashtix_db?useSSL=false&serverTimezone=UTC
+    # Railway MySQL (Public) — iriguchi.proxy.rlwy.net:25228
+    url: jdbc:mysql://iriguchi.proxy.rlwy.net:25228/railway?useSSL=true&serverTimezone=UTC&allowPublicKeyRetrieval=true
     username: root
-    password: networksecure@56 # Replace with your MySQL password
+    password: IWqZWlnhHYbXJYNwkSfaZfEloNIMPDbm
   jpa:
     hibernate:
       ddl-auto: update # Automatically creates/updates tables
