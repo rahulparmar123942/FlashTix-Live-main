@@ -1,21 +1,27 @@
 spring:
   datasource:
-    # Railway MySQL (Public) — iriguchi.proxy.rlwy.net:25228
-    url: jdbc:mysql://iriguchi.proxy.rlwy.net:25228/railway?useSSL=true&serverTimezone=UTC&allowPublicKeyRetrieval=true
-    username: root
-    password: IWqZWlnhHYbXJYNwkSfaZfEloNIMPDbm
+    # ── MySQL (Railway) ──────────────────────────────────────────
+    url: ${DB_URL:jdbc:mysql://iriguchi.proxy.rlwy.net:25228/railway?useSSL=true&serverTimezone=UTC&allowPublicKeyRetrieval=true}
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:IWqZWlnhHYbXJYNwkSfaZfEloNIMPDbm}
   jpa:
     hibernate:
-      ddl-auto: update # Automatically creates/updates tables
-    show-sql: true # Helps debug by showing SQL queries in the console
+      ddl-auto: update
+    show-sql: false
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQLDialect
+
+  # ── Kafka ────────────────────────────────────────────────────
   kafka:
-    bootstrap-servers: localhost:9092
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        sasl.mechanism: ${KAFKA_SASL_MECHANISM:PLAIN}
+        security.protocol: ${KAFKA_SECURITY_PROTOCOL:PLAINTEXT}
+        sasl.jaas.config: ${KAFKA_SASL_JAAS_CONFIG:}
     consumer:
       group-id: flashtix-ticketing-group
       auto-offset-reset: earliest
@@ -23,16 +29,25 @@ spring:
       value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
       properties:
         spring.json.trusted.packages: "*"
+        sasl.mechanism: ${KAFKA_SASL_MECHANISM:PLAIN}
+        security.protocol: ${KAFKA_SECURITY_PROTOCOL:PLAINTEXT}
+        sasl.jaas.config: ${KAFKA_SASL_JAAS_CONFIG:}
+
+  # ── Redis ────────────────────────────────────────────────────
   data:
     redis:
-      host: localhost
-      port: 6379
-  rabbitmq:
-    host: localhost
-    port: 5672
-    username: guest
-    password: guest
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:}
 
+  # ── RabbitMQ ─────────────────────────────────────────────────
+  rabbitmq:
+    host: ${RABBITMQ_HOST:localhost}
+    port: ${RABBITMQ_PORT:5672}
+    username: ${RABBITMQ_USER:guest}
+    password: ${RABBITMQ_PASS:guest}
+
+# ── Resilience4j ─────────────────────────────────────────────
 resilience4j:
   circuitbreaker:
     instances:
@@ -42,9 +57,9 @@ resilience4j:
         waitDurationInOpenState: 10s
         permittedNumberOfCallsInHalfOpenState: 3
 
+# ── MinIO / Object Storage ───────────────────────────────────
 minio:
-  url: http://localhost:9000
-  access-key: admin # Use your actual MinIO key
-  secret-key: password123 # Use your actual MinIO key
-  bucket-name: flashtix-assets #
-  #cdn-domain: http://localhost:9000
+  url: ${MINIO_URL:http://localhost:9000}
+  access-key: ${MINIO_ACCESS_KEY:admin}
+  secret-key: ${MINIO_SECRET_KEY:password123}
+  bucket-name: ${MINIO_BUCKET:flashtix-assets}
