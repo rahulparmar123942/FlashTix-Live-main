@@ -36,9 +36,10 @@ spring:
   # ── Redis ────────────────────────────────────────────────────
   data:
     redis:
-      host: ${REDIS_HOST:localhost}
-      port: ${REDIS_PORT:6379}
-      password: ${REDIS_PASSWORD:}
+      url: ${REDIS_PUBLIC_URL:${REDIS_URL:}}
+      host: ${REDIS_HOST:${RAILWAY_TCP_PROXY_DOMAIN:localhost}}
+      port: ${REDIS_PORT:${RAILWAY_TCP_PROXY_PORT:6379}}
+      password: ${REDIS_PASSWORD:${REDISPASSWORD:dZVIShTcXcZaocZaoqkflUPYiKWrfuXB}}
 
   # ── RabbitMQ ─────────────────────────────────────────────────
   rabbitmq:
