@@ -39,7 +39,6 @@ spring:
   # ── Redis ────────────────────────────────────────────────────
   data:
     redis:
-      url: ${REDIS_PUBLIC_URL:${REDIS_URL:}}
       host: ${REDIS_HOST:${RAILWAY_TCP_PROXY_DOMAIN:localhost}}
       port: ${REDIS_PORT:${RAILWAY_TCP_PROXY_PORT:6379}}
       password: ${REDIS_PASSWORD:${REDISPASSWORD:dZVIShTcXcZaocZaoqkflUPYiKWrfuXB}}
