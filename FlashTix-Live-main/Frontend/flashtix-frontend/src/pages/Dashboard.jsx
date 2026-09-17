@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
-import api from '../api/axiosConfig';
+import api, { BASE_URL } from '../api/axiosConfig';
 import { Client } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
 import { Link } from 'react-router-dom';
@@ -41,8 +41,8 @@ export default function Dashboard() {
         console.log("Events loaded! Attempting to connect to Spring Boot WebSockets...");
 
         const stompClient = new Client({
-            // Connect to the Monolith port (8080) for WebSockets
-            webSocketFactory: () => new SockJS('http://localhost:8080/ws-ticketing'),
+            // Connect to the Backend for WebSockets
+            webSocketFactory: () => new SockJS(`${BASE_URL}/ws-ticketing`),
             debug: (str) => console.log("STOMP DEBUG: " + str),
             reconnectDelay: 5000, // Auto-reconnect if the server restarts
             onConnect: () => {

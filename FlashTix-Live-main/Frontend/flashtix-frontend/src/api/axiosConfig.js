@@ -1,7 +1,7 @@
 import axios from "axios";
 
-// Point this to your API Gateway!
-const BASE_URL = "http://localhost:8081";
+// Point this to your Railway Backend (or Gateway if used)
+export const BASE_URL = import.meta.env.VITE_API_BASE_URL || "https://flashtix-live-main-production.up.railway.app";
 
 const api = axios.create({
   baseURL: BASE_URL,
