@@ -14,7 +14,13 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         // The endpoint React will use to connect to WebSockets
         registry.addEndpoint("/ws-ticketing")
-                .setAllowedOriginPatterns("*") // Allows cross-origin requests from React
+                .setAllowedOriginPatterns(
+                        "https://flash-tix-live-main.vercel.app",
+                        "https://*.vercel.app",
+                        "http://localhost:5173",
+                        "http://localhost:3000",
+                        "*"
+                ) // Allows cross-origin requests from React
                 .withSockJS(); // Fallback for browsers that don't support WebSockets
     }
 

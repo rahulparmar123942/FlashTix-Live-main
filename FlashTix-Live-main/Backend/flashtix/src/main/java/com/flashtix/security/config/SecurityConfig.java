@@ -49,7 +49,8 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth ->
-                        auth.requestMatchers("/api/auth/**").permitAll() // Login/Register are public
+                        auth.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll() // Preflight requests
+                                .requestMatchers("/api/auth/**").permitAll() // Login/Register are public
                                 .requestMatchers(HttpMethod.GET, "/api/events").permitAll() // Anyone can browse
 
                                 // --- NEW: Allow WebSocket Handshakes ---
@@ -70,10 +71,18 @@ public class SecurityConfig {
     @Bean
     public org.springframework.web.cors.CorsConfigurationSource corsConfigurationSource() {
         org.springframework.web.cors.CorsConfiguration configuration = new org.springframework.web.cors.CorsConfiguration();
-        configuration.addAllowedOriginPattern("*");
-        configuration.setAllowedMethods(java.util.List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
+        configuration.setAllowedOriginPatterns(java.util.List.of(
+                "https://flash-tix-live-main.vercel.app",
+                "https://*.vercel.app",
+                "http://localhost:5173",
+                "http://localhost:3000"
+        ));
+        configuration.setAllowedMethods(java.util.List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH", "HEAD"));
         configuration.setAllowedHeaders(java.util.List.of("*"));
+        configuration.setExposedHeaders(java.util.List.of("Authorization", "Content-Type"));
         configuration.setAllowCredentials(true);
+        configuration.setMaxAge(3600L);
+
         org.springframework.web.cors.UrlBasedCorsConfigurationSource source = new org.springframework.web.cors.UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
